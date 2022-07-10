@@ -4,6 +4,13 @@ from ChessboardDataset import ChessboardDataset
 from Transformations import *
 from torch.utils.data import DataLoader
 
+AUGMENTED_PREFIX = '_'
+NUM_AUG_FOLDS = 1
+TRAIN_INPUT_PATH = 'Images/Train/Input/'
+TRAIN_TARGET_PATH = 'Images/Train/Target/'
+TEST_INPUT_PATH = 'Images/Test/Input/'
+TEST_TARGET_PATH = 'Images/Test/Target/'
+
 t = Transformations([ToPIL(),
                      Resize(),
                      Rotation(),
@@ -12,17 +19,13 @@ t = Transformations([ToPIL(),
                      AdjustSharpness(),
                      ToTensor()], 1)
 
-train_dataset = ChessboardDataset("Images/Inputs/train", "Images/Targets/train", transform=t)
-test_dataset = ChessboardDataset("Images/Inputs/test", "Images/Targets/test", transform=t)
+train_dataset = ChessboardDataset(TRAIN_INPUT_PATH, TRAIN_TARGET_PATH, transform=t)
 
-if os.path.isdir("Dataset"):
-    shutil.rmtree("Dataset")
-os.mkdir("Dataset")
-os.mkdir("Dataset/train")
-os.mkdir("Dataset/test")
 img_num = 0
-for _ in range(2):
-    for img, label in test_dataset:
+for _ in range(NUM_AUG_FOLDS):
+    for img, label in train_dataset:
+        while os.path.isfile(f'{TRAIN_INPUT_PATH}{str(img_num).zfill(4)}.png'):
+            img_num += 1
+        save_image(img, f'{TRAIN_INPUT_PATH}{AUGMENTED_PREFIX}{str(img_num).zfill(4)}.png')
+        save_image(label, f'{TRAIN_TARGET_PATH}{AUGMENTED_PREFIX}{str(img_num).zfill(4)}_label.png')
         img_num += 1
-        save_image(img, 'Dataset/test/img' + str(img_num) + '.png')
-        save_image(label, 'Dataset/test/label' + str(img_num) + '.png')
