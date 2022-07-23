@@ -1,9 +1,21 @@
+import os.path
+import sys
 from ChessboardDataset import ChessboardDataset
 from torch.utils.data import DataLoader
 import torch
 from Transformations import *
+import gdown
+from zipfile import ZipFile
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
+CHESSBOARD_DATASET_ID = "1US_hGSQEK_gZm8nhVP-b5g8u5D1a5j1O"  # Id obtained from google drive link
+
+if not os.path.isdir("ChessboardImages"):
+    try:
+        gdown.download(id=CHESSBOARD_DATASET_ID, quiet=False)
+        with ZipFile("ChessboardImages.zip", "r") as f:
+            f.extractall()
+    except:
+        sys.exit("There has been an error while setting up the chessboard dataset")
 
 t = Transformations([ToPIL(),
                      Resize(),
