@@ -9,10 +9,10 @@ AUGMENTED_PREFIX = '_'
 NUM_AUG_FOLDS = 1  # If set to <=0, no new data will be generated
 TRUNCATE_AUGMENTATIONS = True
 OVERWRITE_AUGMENTATIONS = False
-SOURCE_IMAGE_PATH = 'Images/Train/Input/'
-SOURCE_MASK_PATH = 'Images/Train/Target/'
-OUTPUT_IMAGE_PATH = 'Images/Val/Input/'
-OUTPUT_MASK_PATH = 'Images/Val/Target/'
+SOURCE_IMAGE_PATH = 'ChessboardImages/Train/Input/'
+SOURCE_MASK_PATH = 'ChessboardImages/Train/Target/'
+OUTPUT_IMAGE_PATH = 'ChessboardImages/Val/Input/'
+OUTPUT_MASK_PATH = 'ChessboardImages/Val/Target/'
 
 transformation_epsilon = 1  # Probability to apply transformations other than resize to the images.
                             # Resizing is applied to all images
