@@ -23,7 +23,7 @@ class ChessboardDataset(Dataset):
         target_filename = self.target_list[index]
 
         x = np.array(Image.open(input_filename).convert("RGB"))
-        y = np.array(Image.open(target_filename))
+        y = np.array(Image.open(target_filename).convert("L"))
 
         if self.transform:
             x, y = self.transform(x, y)
