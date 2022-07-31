@@ -11,6 +11,9 @@ import time
 import datetime
 import cv2
 import numpy as np
+from PIL import Image
+import torchvision.transforms.functional as F
+from ChessboardConfiguration import ChessboardConfiguration as cfg
 
 
 class DeepLabV3:
@@ -26,8 +29,27 @@ class DeepLabV3:
         self.optimizer = optim.Adam(self.model.parameters(), lr=1e-4)
         self.model.to(self.device)
 
-    def __call__(self, x):
-        self._validation(x)
+    def __call__(self, x_path):
+        if not os.path.isfile(x_path):
+            print("Input is not a file")
+            return
+        try:
+            x = Image.open(x_path)
+            x = x.convert("RGB")
+        except:
+            print(f"Cant properly setup image {x_path}")
+        x = F.to_tensor(x)
+        x = F.resize(x, cfg.IMG_RESOLUTION)
+        x = x.to(self.device)
+        x = torch.unsqueeze(x, 0)
+        self.model.eval()
+        self.optimizer.zero_grad()
+        output = self.model(x)
+        output_image = output['out'][0][0]
+        output_image = output_image.cpu().detach().numpy().astype(np.uint8)
+        cv2.imshow("output", output_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
     def load_last_save(self):
         checkpoints = os.listdir(DeepLabV3.SAVE_DIR)

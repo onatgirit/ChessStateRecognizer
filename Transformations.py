@@ -3,6 +3,7 @@ import torchvision.transforms.functional as F
 import numpy as np
 from typing import List, Callable
 from PIL import Image
+from ChessboardConfiguration import ChessboardConfiguration as cfg
 
 
 class CustomTF:
@@ -21,7 +22,7 @@ class ToPIL(CustomTF):
 
 
 class Resize(CustomTF):
-    def __init__(self, dims=(1080, 1920)):
+    def __init__(self, dims=cfg.IMG_RESOLUTION):
         super().__init__(False)
         self.dims = dims
 
