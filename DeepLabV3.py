@@ -47,11 +47,9 @@ class DeepLabV3:
         output = self.model(x)
         output_image = output['out'][0][0]
         output_image = output_image.cpu().detach().numpy().astype(np.uint8)
-        cv2.imshow("output", output_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        return output_image
 
-    def load_last_save(self):
+    def load_save(self):
         checkpoints = os.listdir(DeepLabV3.SAVE_DIR)
         if len(checkpoints) == 0:
             print("No saves found under Checkpoints folder")

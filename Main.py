@@ -10,6 +10,8 @@ from zipfile import ZipFile
 from DeepLabV3 import DeepLabV3
 from torchvision import transforms
 from ChessboardConfiguration import ChessboardConfiguration as cfg
+from ContourExtractor import ContourExtractor
+import cv2
 
 if not os.path.isdir("ChessboardImages"):
     try:
@@ -38,5 +40,12 @@ model = DeepLabV3()
 
 # model.train(training_dataloader, cfg.NUM_EPOCHS, validation_dataloader=val_dataloader)
 
-# model.load_last_save()
-# model("ChessboardImages/Test/Input/0003.png")
+model.load_save()
+output = model("ChessboardImages/Test/Input/0015.png")
+img = cv2.imread("ChessboardImages/Test/Input/0015.png")
+img = cv2.resize(img, (240, 135))
+approx = ContourExtractor.get_approx_quad(output)
+warped = ContourExtractor.get_warped_board(img, approx)
+cv2.imshow('Warped', warped)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
