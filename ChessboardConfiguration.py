@@ -3,4 +3,4 @@ class ChessboardConfiguration:
     BATCH_SIZE = 2
     NUM_EPOCHS = 8
     IMG_RESOLUTION = (135, 240)
-    EXTRACTED_BOARD_RESOLUTION = (200, 200)
+    EXTRACTED_BOARD_RESOLUTION = (640, 640)

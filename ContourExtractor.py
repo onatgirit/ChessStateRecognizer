@@ -15,7 +15,7 @@ class ContourExtractor:
 
     @staticmethod
     def get_warped_board(img, approx):
-        s = np.float32(approx.sum(axis=1))
+        s = np.float32(approx.sum(axis=1))*8
         dst = np.array([
             [0, 0],
             [cfg.EXTRACTED_BOARD_RESOLUTION[1] - 1, 0],
